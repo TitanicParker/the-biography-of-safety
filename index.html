@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Biography of Safety — Reading room</title><style>body{margin:0;background:#faf7f1;color:#28282a;font:18px Georgia,serif}.loading{min-height:100vh;display:grid;place-items:center;text-align:center;padding:2rem}</style></head><body>
+<div class="loading" role="status"><p>Opening <em>The Biography of Safety</em>…</p></div>
+<script>
+(async()=>{
+ try{
+  const url='https://raw.githubusercontent.com/TitanicParker/the-biography-of-safety/main/The_Biography_of_Safety_Finalist_Revision.html';
+  const response=await fetch(url,{cache:'no-store'});
+  if(!response.ok)throw new Error('Source HTTP '+response.status);
+  const html=await response.text();
+  const script='<script defer src="https://titanicparker.github.io/the-biography-of-safety/reader.js"><\/script>';
+  document.open();document.write(html.replace(/<\/body>/i,script+'</body>'));document.close();
+ }catch(error){
+  document.querySelector('.loading').innerHTML='<p>The essay could not be loaded. <a href="https://github.com/TitanicParker/the-biography-of-safety">Read the source on GitHub</a>.</p>';
+  console.error(error);
+ }
+})();
+</script></body></html>
