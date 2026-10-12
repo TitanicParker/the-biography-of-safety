@@ -1,21 +1,25 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Biography of Safety — Reading room</title><style>body{margin:0;background:#faf7f1;color:#28282a;font:18px Georgia,serif}.loading{min-height:100vh;display:grid;place-items:center;text-align:center;padding:2rem}</style></head><body>
-<div class="loading" role="status"><p>Opening <em>The Biography of Safety</em>…</p></div>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The Biography of Safety — Reading Room</title><style>body{margin:0;background:#faf7f1;color:#28282a;font:18px Georgia,serif}.loading{min-height:100vh;display:grid;place-items:center;padding:2rem;text-align:center}</style></head>
+<body><div class="loading" role="status">Opening The Biography of Safety…</div>
 <script>
-(async()=>{
- try{
-  const url='https://raw.githubusercontent.com/TitanicParker/the-biography-of-safety/main/The_Biography_of_Safety_Finalist_Revision.html';
-  const response=await fetch(url,{cache:'no-store'});
-  if(!response.ok)throw new Error('Source HTTP '+response.status);
-  const html=await response.text();
-  const readerResponse=await fetch('https://raw.githubusercontent.com/TitanicParker/the-biography-of-safety/main/reader.js',{cache:'no-store'});
-  if(!readerResponse.ok)throw new Error('Reader HTTP '+readerResponse.status);
-  const readerCode=await readerResponse.text();
-  const script='<scr'+'ipt>'+readerCode.replace(/<\\/script/gi,'<\\\\/script')+'</scr'+'ipt>';
-  document.open();document.write(html.replace(/<\/body>/i,script+'</body>'));document.close();
- }catch(error){
-  document.querySelector('.loading').innerHTML='<p>The essay could not be loaded. <a href="https://github.com/TitanicParker/the-biography-of-safety">Read the source on GitHub</a>.</p>';
-  console.error(error);
- }
+(async function () {
+  try {
+    const base = 'https://raw.githubusercontent.com/TitanicParker/the-biography-of-safety/main/';
+    const responses = await Promise.all([
+      fetch(base + 'The_Biography_of_Safety_Finalist_Revision.html', {cache:'no-store'}),
+      fetch(base + 'reader.js', {cache:'no-store'})
+    ]);
+    if (responses.some(r => !r.ok)) throw new Error('Essay or reader unavailable');
+    const [essay, reader] = await Promise.all(responses.map(r => r.text()));
+    if (!essay.includes('</body>')) throw new Error('Essay missing closing body');
+    const tag = '<scr'+'ipt>' + reader.replace(/<\/script/gi, '<\\/script') + '</scr'+'ipt>';
+    document.open();
+    document.write(essay.replace('</body>', tag + '</body>'));
+    document.close();
+  } catch (error) {
+    document.querySelector('.loading').innerHTML = '<p>Unable to load the reader. <a href="https://github.com/TitanicParker/the-biography-of-safety">Open the source</a>.</p>';
+    console.error(error);
+  }
 })();
 </script></body></html>
