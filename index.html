@@ -8,7 +8,10 @@
   const response=await fetch(url,{cache:'no-store'});
   if(!response.ok)throw new Error('Source HTTP '+response.status);
   const html=await response.text();
-  const script='<script defer src="https://titanicparker.github.io/the-biography-of-safety/reader.js"><\/script>';
+  const readerResponse=await fetch('https://raw.githubusercontent.com/TitanicParker/the-biography-of-safety/main/reader.js',{cache:'no-store'});
+  if(!readerResponse.ok)throw new Error('Reader HTTP '+readerResponse.status);
+  const readerCode=await readerResponse.text();
+  const script='<scr'+'ipt>'+readerCode.replace(/<\\/script/gi,'<\\\\/script')+'</scr'+'ipt>';
   document.open();document.write(html.replace(/<\/body>/i,script+'</body>'));document.close();
  }catch(error){
   document.querySelector('.loading').innerHTML='<p>The essay could not be loaded. <a href="https://github.com/TitanicParker/the-biography-of-safety">Read the source on GitHub</a>.</p>';
